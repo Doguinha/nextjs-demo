@@ -31,10 +31,16 @@ export async function getStaticPaths() {
   client.close();
 
   return {
+    //Atributo fallback:
     //informa se vc mapeou todas as urls possiveis para esse component ou só alguns
     // caso false, vc informa que mapeou todos os ids das urls, então qualquer url não mapeada retornará 404
+
     // caso true, nextjs vai terntar gerar essa pagina dinamicamente pelo id para cada requisição que chegar no servidor, então é bom para mapear algumas paginas mais importantes e carregar mais rapido
-    fallback: false,
+    // caso true, vai retornar uma pagina vazia imediatamente para o usuario e depois retorna a pagina completa quando os dados estiverem prontos
+    // caso true, enquanto os dados não estão prontos e a pagina em branco é mostrada, temos que tratar esses casos sem dados ainda, talvez com um component de loading
+
+    //caso 'blocking' funciona igual true, com a diferença que nada é mostrado ao usuario enquanto os dados não estão prontos, então não precisamos tratar nda
+    fallback: "blocking",
     //em produção, consultar os ids pela API
     paths: meetups.map((meetup) => ({
       params: { meetupId: meetup._id.toString() },
